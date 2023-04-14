@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react'
 import { Text,View,StyleSheet,Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
-export const NowPlayingListDetail = ({route},isLoggedIn) => {
 
+
+//todo CHECK IF THE USER IS LOGGED IN WITH FIREBASE AUTH
+export const NowPlayingListDetail = ({route}) => {
+  const [isLoggedIn,setIsLoggedIn] = useState(false)
   const {data} = route.params
   const imageUrl = `https://image.tmdb.org/t/p/w500${data.backdrop_path}`
   return (

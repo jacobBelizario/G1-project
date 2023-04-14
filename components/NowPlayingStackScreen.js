@@ -21,7 +21,7 @@ export const NowPlayingStackScreen = ({navigation}) => {
     .catch(error => console.error(error));
   },[])
   const renderItem = ({ item }) => (
-    <NowPlayingListItem data={item} onPress={() => navigation.navigate('Movie Detail',{data:item,isLoggedIn:null})} />
+    <NowPlayingListItem data={item} onPress={() => navigation.navigate('Movie Detail',{data:item})} />
   );
 
   return (
