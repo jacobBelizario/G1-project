@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Text,View,StyleSheet,Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -35,10 +35,10 @@ export const NowPlayingListDetail = ({route}) => {
       :
       //React tricks
       <Fragment>
-      <Text>You must be logged in to use this feature</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.text}>Buy Tickets</Text>
-      </TouchableOpacity>
+      <Text style={{marginBottom:20,color: 'gray'}}>You must be logged in to use this feature</Text>
+      <View style={styles.buttonInactive}>
+        <Text style={styles.textInactive}>Buy Tickets</Text>
+      </View>
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.text}>Login or Create New Account</Text>
@@ -88,6 +88,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
       },
+      buttonInactive: {
+        opacity: 0.5,
+        backgroundColor: '#ccc',
+        paddingVertical: 12,
+        width:300,
+        paddingHorizontal: 24,
+        borderRadius: 5,
+        elevation: 3,
+        marginBottom: 20
+      },
       button: {
         backgroundColor: 'salmon',
         paddingVertical: 12,
@@ -98,6 +108,11 @@ const styles = StyleSheet.create({
       },
       text: {
         color: 'white',
+        fontSize: 18,
+        textAlign: 'center',
+      },
+      textInactive: {
+        color: 'gray',
         fontSize: 18,
         textAlign: 'center',
       },
