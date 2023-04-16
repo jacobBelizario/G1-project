@@ -1,12 +1,13 @@
-import React, { Fragment, useContext, useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import AuthContext from '../../store/auth-context';
-import { IMAGE_API } from '@env';
+import React, { Fragment, useContext, useState } from "react";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import AuthContext from "../../store/auth-context";
+import { IMAGE_API } from "@env";
 
 export const NowPlayingListDetail = ({ navigation, route }) => {
   const authCtx = useContext(AuthContext);
   const { data } = route.params;
+  console.log(`${IMAGE_API}`);
   const imageUrl = `${IMAGE_API}${data.backdrop_path}`;
   return (
     <View>
@@ -16,7 +17,7 @@ export const NowPlayingListDetail = ({ navigation, route }) => {
         <Text style={styles.title}>{data.title}</Text>
         <Text style={styles.title}>
           {data.vote_average * 10}%
-          <Icon name="star" color={'orange'} size={20} />
+          <Icon name="star" color={"orange"} size={20} />
         </Text>
       </View>
       <Text style={styles.date}>Release Date: {data.release_date}</Text>
@@ -26,13 +27,15 @@ export const NowPlayingListDetail = ({ navigation, route }) => {
 
       <View style={styles.buttonContainer}>
         {authCtx.isLoggedIn ? (
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("BuyTickets", { data: data })}
+          >
             <Text style={styles.text}>Buy Tickets</Text>
           </TouchableOpacity>
         ) : (
-          //React tricks
           <Fragment>
-            <Text style={{ marginBottom: 20, color: 'gray' }}>
+            <Text style={{ marginBottom: 20, color: "gray" }}>
               You must be logged in to use this feature
             </Text>
             <View style={styles.buttonInactive}>
@@ -41,7 +44,7 @@ export const NowPlayingListDetail = ({ navigation, route }) => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate("Login")}
             >
               <Text style={styles.text}>Login or Create New Account</Text>
             </TouchableOpacity>
@@ -54,30 +57,30 @@ export const NowPlayingListDetail = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
+    width: "100%",
     height: 300,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   inlineView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     borderRadius: 5,
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   date: {
     paddingLeft: 10,
-    color: 'gray',
+    color: "gray",
     fontSize: 15,
   },
   plot: {
     fontSize: 15,
     marginTop: 30,
     padding: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   summary: {
     paddingLeft: 10,
@@ -85,12 +88,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonInactive: {
     opacity: 0.5,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     paddingVertical: 12,
     width: 300,
     paddingHorizontal: 24,
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: 'salmon',
+    backgroundColor: "orangered",
     paddingVertical: 12,
     width: 300,
     paddingHorizontal: 24,
@@ -107,13 +110,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   textInactive: {
-    color: 'gray',
+    color: "gray",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

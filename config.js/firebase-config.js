@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 import {
   FB_API_KEY,
@@ -9,7 +9,7 @@ import {
   FB_STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
   APP_ID,
-} from '@env';
+} from "@env";
 
 const firebaseConfig = {
   apiKey: FB_API_KEY,

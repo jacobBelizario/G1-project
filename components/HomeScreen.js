@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState, useContext } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { NowPlaying } from './playlist/NowPlaying';
-import { MyPurchases } from './purchase/MyPurchases';
-import { LogoutScreen } from './Auth/LogoutScreen';
-import AuthContext from '../store/auth-context';
+import { StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useState, useContext } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { NowPlaying } from "./playlist/NowPlaying";
+import { MyPurchases } from "./purchase/MyPurchases";
+import { LogoutScreen } from "./Auth/LogoutScreen";
+import AuthContext from "../store/auth-context";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ export default function Home() {
         name="NowPlaying"
         component={NowPlaying}
         options={{
-          tabBarLabel: 'Now Playing',
+          tabBarLabel: "Now Playing",
           tabBarIcon: ({ color, size }) => (
             <Icon name="list" color={color} size={size} />
           ),
@@ -28,7 +28,7 @@ export default function Home() {
         name="MyPurchases"
         component={MyPurchases}
         options={{
-          tabBarLabel: 'My Purchases',
+          tabBarLabel: "My Purchases",
           tabBarIcon: ({ color, size }) => (
             <Icon name="ticket" color={color} size={size} />
           ),
@@ -39,10 +39,11 @@ export default function Home() {
           name="Logout"
           component={LogoutScreen}
           options={{
-            tabBarLabel: 'Logout',
+            tabBarLabel: "Logout",
             tabBarIcon: ({ color, size }) => (
               <Icon name="ticket" color={color} size={size} />
             ),
+            headerShown: false,
           }}
         />
       )}
@@ -53,8 +54,8 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

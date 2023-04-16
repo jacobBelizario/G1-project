@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { auth, db } from '../config.js/firebase-config';
+import React, { useCallback, useEffect, useState } from "react";
+import { auth, db } from "../config.js/firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-} from '@firebase/auth';
+} from "@firebase/auth";
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
-  email: '',
+  email: "",
   login: (user) => {},
   logout: () => {},
   signUp: (user) => {},

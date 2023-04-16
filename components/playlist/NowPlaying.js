@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
-import { NowPlayingListItem } from './NowPlayingListItem';
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import { NowPlayingListItem } from "./NowPlayingListItem";
 
-import { API_URL, API_KEY, API_QUERY } from '@env';
+import { API_URL, API_KEY, API_QUERY } from "@env";
 
-// const navigation = useNavigation();
 export const NowPlaying = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {
+    console.log(`${API_URL}${API_KEY}${API_QUERY}`);
+
     fetch(`${API_URL}${API_KEY}${API_QUERY}`)
       .then((response) => response.json())
       .then((data) => {
@@ -19,7 +20,7 @@ export const NowPlaying = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <NowPlayingListItem
       data={item}
-      onPress={() => navigation.navigate('MovieDetail', { data: item })}
+      onPress={() => navigation.navigate("MovieDetail", { data: item })}
     />
   );
 
