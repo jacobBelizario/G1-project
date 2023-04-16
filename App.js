@@ -1,55 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState } from 'react';
-import { NowPlayingStackScreen } from './components/NowPlayingStackScreen';
-import { MyPurchasesStackScreen } from './components/MyPurchasesStackScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { NowPlayingHomeScreen } from './components/NowPlayingHomeScreen';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NowPlaying } from './components/playlist/NowPlaying';
+import { MyPurchases } from './components/purchase/MyPurchases';
+import { LogoutScreen } from './components/Auth/LogoutScreen';
+import { LoginScreen } from './components/Auth/LoginScreen';
+import Home from './components/HomeScreen';
+import { NowPlayingListDetail } from './components/playlist/NowPlayingListDetail';
+import { AuthContextProvider } from './store/auth-context';
 
-
-
-const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isLoggedIn,setIsLoggedIn] = useState(false)
   return (
+    <AuthContextProvider>
       <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen 
-        name="Now Playing" 
-        component={NowPlayingHomeScreen} 
-        options={{
-          tabBarLabel: 'Now Playing',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="list" color={color} size={size} />
-          ),
-          headerShown:false
-        }}
-        />
-        <Tab.Screen name="My Purchases" 
-        component={MyPurchasesStackScreen} 
-        options={{
-          tabBarLabel: 'My Purchases',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ticket" color={color} size={size} />
-          ),
-        }}
-        />
-        {isLoggedIn ? 
-                <Tab.Screen name="" 
-                component={NowPlayingStackScreen} 
-                options={{
-                  tabBarLabel: 'My Purchases',
-                  tabBarIcon: ({ color, size }) => (
-                    <Icon name="ticket" color={color} size={size} />
-                  ),
-                }}
-                />:null       
-        }
-      </Tab.Navigator>
-    </NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: { backgroundColor: 'orangered' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { fontWeight: 'bold' },
+          }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Logout" component={LogoutScreen} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="NowPlaying" component={NowPlaying} />
+          <Stack.Screen name="MovieDetail" component={NowPlayingListDetail} />
+          <Stack.Screen name="MyPurchases" component={MyPurchases} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }
 
