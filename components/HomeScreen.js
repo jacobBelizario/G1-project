@@ -41,7 +41,7 @@ export default function Home() {
           options={{
             tabBarLabel: "Logout",
             tabBarIcon: ({ color, size }) => (
-              <Icon name="ticket" color={color} size={size} />
+              <Icon name="user" color={color} size={size} />
             ),
             headerShown: false,
           }}

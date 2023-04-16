@@ -7,7 +7,6 @@ import { IMAGE_API } from "@env";
 export const NowPlayingListDetail = ({ navigation, route }) => {
   const authCtx = useContext(AuthContext);
   const { data } = route.params;
-  console.log(`${IMAGE_API}`);
   const imageUrl = `${IMAGE_API}${data.backdrop_path}`;
   return (
     <View>
