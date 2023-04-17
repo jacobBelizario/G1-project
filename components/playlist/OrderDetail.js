@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { addUser } from "../../helpers/db-helper";
+import AuthContext from "../../store/auth-context";
 
 export const OrderDetail = ({ data }) => {
-  const insertToDB = () => {
-    //insert to subcollections
-    //so use authCtx.email as the refiD
+  const authCtx = useContext(AuthContext);
+  const insertToDB = async () => {
+    await addUser(authCtx, data);
   };
 
   return (
