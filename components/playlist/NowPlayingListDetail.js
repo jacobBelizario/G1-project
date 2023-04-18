@@ -6,6 +6,7 @@ import { IMAGE_API } from "@env";
 
 export const NowPlayingListDetail = ({ navigation, route }) => {
   const authCtx = useContext(AuthContext);
+  console.log(`user uid: ${authCtx.uid}`);
   const { data } = route.params;
   const imageUrl = `${IMAGE_API}${data.backdrop_path}`;
   return (

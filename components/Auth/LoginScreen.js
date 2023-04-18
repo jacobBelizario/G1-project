@@ -16,6 +16,17 @@ export const LoginScreen = ({ navigation, route }) => {
   const [password, setPassword] = useState("");
   const [isNewAccount, setIsNewAccount] = useState(false);
 
+  const handleSignUp = async () => {
+    console.log(`signing up with email: ${email} and password: ${password}`);
+    const signUpRes = await authCtx.signup({ email, password });
+
+    if (signUpRes.status) {
+      navigation.navigate("Home");
+    } else {
+      Alert.alert(signUpRes.message);
+    }
+  };
+
   const handleLogin = async () => {
     console.log(`Logging in with email: ${email} and password: ${password}`);
     const loginRes = await authCtx.login({ email, password });
@@ -24,17 +35,6 @@ export const LoginScreen = ({ navigation, route }) => {
       navigation.navigate("Home");
     } else {
       Alert.alert(loginRes.message);
-    }
-  };
-
-  const handleSignUp = async () => {
-    console.log(`signing in with email: ${email} and password: ${password}`);
-    const signUpRes = await authCtx.signUp({ email, password });
-    console.log(signUpRes);
-    if (signUpRes.status) {
-      navigation.navigate("Home");
-    } else {
-      Alert.alert(signUpRes.message);
     }
   };
 

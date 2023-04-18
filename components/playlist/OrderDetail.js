@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { addUser } from "../../helpers/db-helper";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { addSubcollection } from "../../helpers/db-helper";
 import AuthContext from "../../store/auth-context";
 
-export const OrderDetail = ({ data }) => {
+export const OrderDetail = ({ navigation, data }) => {
   const authCtx = useContext(AuthContext);
   const insertToDB = async () => {
-    await addUser(authCtx, data);
+    await addSubcollection(data, authCtx.uid);
+    Alert.alert(`Purchased Ticket!`);
+    navigation.navigate("Home");
   };
 
   return (

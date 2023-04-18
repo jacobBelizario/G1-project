@@ -9,7 +9,7 @@ import {
 import AuthContext from "../../store/auth-context";
 import { OrderDetail } from "./OrderDetail";
 
-export const BuyTickets = ({ route }) => {
+export const BuyTickets = ({ navigation, route }) => {
   const { data } = route.params;
   const authCtx = useContext(AuthContext);
   const [email, setEmail] = useState(authCtx.email);
@@ -24,6 +24,8 @@ export const BuyTickets = ({ route }) => {
     setTax(subtotal * 0.13);
 
     setOrder({
+      email: email,
+      name: name,
       qty: qty,
       movieTitle: data.title,
       subtotal: subtotal,
@@ -75,7 +77,7 @@ export const BuyTickets = ({ route }) => {
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
-      {qty >= 1 ? <OrderDetail data={order} /> : null}
+      {qty >= 1 ? <OrderDetail data={order} navigation={navigation} /> : null}
     </View>
   );
 };

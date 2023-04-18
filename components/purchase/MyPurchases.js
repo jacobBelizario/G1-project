@@ -1,15 +1,53 @@
-import React, { useContext, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
 import AuthContext from "../../store/auth-context";
+import { getAllUserPurchase } from "../../helpers/db-helper";
+import { PurchaseListItem } from "./PurchaseListItem";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export const MyPurchases = ({ navigation }) => {
   const authCtx = useContext(AuthContext);
   const [purchases, setPurchases] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setLoading(true);
+    async function getPurchases() {
+      const fetchPurchases = await getAllUserPurchase(authCtx.uid);
+      setPurchases(fetchPurchases);
+    }
+    setLoading(true);
+    authCtx.isLoggedIn ? getPurchases() : null;
+    setLoading(false);
+  }, [authCtx.isLoggedIn]);
+  const renderItem = ({ item }) => <PurchaseListItem data={item.data()} />;
   return (
     <View>
+      <Spinner
+        visible={loading}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       {authCtx.isLoggedIn ? (
-        <View></View>
+        <View>
+          {purchases.length > 0 ? (
+            <FlatList
+              data={purchases}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          ) : (
+            <View style={styles.container}>
+              <Text>No Purchases buy a ticket now</Text>
+            </View>
+          )}
+        </View>
       ) : (
         <View style={styles.container}>
           <Text style={styles.title}>This feature is only for users</Text>
@@ -69,5 +107,8 @@ const styles = StyleSheet.create({
     color: "gray",
     fontSize: 18,
     textAlign: "center",
+  },
+  spinnerTextStyle: {
+    color: "orangered",
   },
 });

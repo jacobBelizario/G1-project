@@ -1,26 +1,30 @@
-import React, { useContext } from "react";
-import { auth, db } from "../config.js/firebase-config";
-import { addDoc, collection, getDocs } from "firebase/firestore";
-import AuthContext from "../store/auth-context";
+import { db } from "../config.js/firebase-config";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
 
-export const getAllUserPurchase = async () => {
+export const getAllUserPurchase = async (uid) => {
   try {
-    const querySnapshot = await getDocs(collection(db));
-  } catch (error) {
-    console.log("error");
+    const q = query(collection(db, "movie_users", uid, "purchased_tickets"));
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs;
+
+    return documents;
+  } catch (err) {
+    console.error(`Error while getting all documents from collection : ${err}`);
+    return null;
   }
 };
 
-export const addUser = async (context, data) => {
+export const addSubcollection = async (data, uid) => {
   try {
-    const addUser = await addDoc(collection(db, "users"), {
-      user: context.email,
-    });
-    const addSubcollection = await addDoc(
-      collection(db, "users").doc(addUser.uid).collection("purchases"),
-      data
+    const subCollectionRef = collection(
+      db,
+      "movie_users",
+      uid,
+      "purchased_tickets"
     );
-  } catch (error) {
-    console.log("error");
+    const insertedDoc = await addDoc(subCollectionRef, data);
+    console.log(`Employee added successfully : ${insertedDoc.id}`);
+  } catch (err) {
+    console.error(`Error while saving document to collection : ${err}`);
   }
 };
