@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { auth, db } from "../config.js/firebase-config";
+import React, { useState } from 'react';
+import { auth, db } from '../config.js/firebase-config';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-} from "@firebase/auth";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+} from '@firebase/auth';
+import { collection, addDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
-  email: "",
-  uid: "",
+  email: '',
   login: (user) => {},
   logout: () => {},
   signUp: (user) => {},
@@ -19,12 +18,10 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState(null);
-  const [uid, setUid] = useState(null);
 
   const logoutHandler = async () => {
     console.log(`logging out...`);
     setEmail(null);
-    setUid(null);
     setIsLoggedIn(false);
     await signOut(auth);
   };
@@ -37,13 +34,19 @@ export const AuthContextProvider = (props) => {
         user?.password
       );
 
-      // create user collection and set UID
-      const collectionRef = collection(db, "movie_users");
-      const insertedDoc = await addDoc(collectionRef, {
+      // create user collection
+      const collectionRef = collection(
+        db,
+        'movie_users',
+        user?.email,
+        'user_profile'
+      );
+      const docRef = doc(collectionRef, user?.email);
+      await setDoc(docRef, {
         email: user?.email,
         password: user?.password,
       });
-      setUid(insertedDoc.id);
+
       setEmail(userCredentials.user.email);
       setIsLoggedIn(true);
       return {
@@ -68,20 +71,34 @@ export const AuthContextProvider = (props) => {
         user?.password
       );
 
-      const collectionRef = collection(db, "movie_users");
-      const filter = where("email", "==", user?.email);
-      const q = query(collectionRef, filter);
-      const querySnapshot = await getDocs(q);
-      const documents = querySnapshot.docs;
+      // check if there's a user collection for the logged in user
+      const subCollectionRef = collection(
+        db,
+        'movie_users',
+        user?.email,
+        'user_profile'
+      );
+      const docRef = doc(subCollectionRef, user?.email);
+      const docSnap = await getDoc(docRef);
 
-      console.log(`Number of documents received : ${documents.length}`);
-
-      if (documents.length > 0) {
-        for (let i = 0; i < documents.length; i++) {
-          setUid(documents[i].id);
-        }
+      if (docSnap.exists()) {
+        // The document exists.
+        const data = docSnap.data();
+        console.log('Document data:', data);
       } else {
-        console.error(`no matching user found for ${user?.email}`);
+        // user not found
+        // create user collection
+        const collectionRef = collection(
+          db,
+          'movie_users',
+          user?.email,
+          'user_profile'
+        );
+        const docRef = doc(collectionRef, user?.email);
+        await setDoc(docRef, {
+          email: user?.email,
+          password: user?.password,
+        });
       }
       setEmail(userCredentials.user.email);
       setIsLoggedIn(true);
@@ -102,7 +119,6 @@ export const AuthContextProvider = (props) => {
   const contextValue = {
     isLoggedIn: isLoggedIn,
     email: email,
-    uid: uid,
     login: loginHandler,
     signup: signupHandler,
     logout: logoutHandler,

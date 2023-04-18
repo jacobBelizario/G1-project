@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 import {
   Alert,
   Pressable,
@@ -7,13 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import AuthContext from "../../store/auth-context";
+} from 'react-native';
+import AuthContext from '../../store/auth-context';
+import DbContext from '../../store/db-context';
 
 export const LoginScreen = ({ navigation, route }) => {
   const authCtx = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dbCtx = useContext(DbContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isNewAccount, setIsNewAccount] = useState(false);
 
   const handleSignUp = async () => {
@@ -21,7 +23,7 @@ export const LoginScreen = ({ navigation, route }) => {
     const signUpRes = await authCtx.signup({ email, password });
 
     if (signUpRes.status) {
-      navigation.navigate("Home");
+      navigation.navigate('Home');
     } else {
       Alert.alert(signUpRes.message);
     }
@@ -32,7 +34,7 @@ export const LoginScreen = ({ navigation, route }) => {
     const loginRes = await authCtx.login({ email, password });
     console.log(loginRes);
     if (loginRes.status) {
-      navigation.navigate("Home");
+      navigation.navigate('Home');
     } else {
       Alert.alert(loginRes.message);
     }
@@ -74,11 +76,11 @@ export const LoginScreen = ({ navigation, route }) => {
 
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          {isNewAccount ? "Already have an account?" : "New user?"}
+          {isNewAccount ? 'Already have an account?' : 'New user?'}
         </Text>
         <Pressable onPress={() => setIsNewAccount((prev) => !prev)}>
           <Text style={styles.pressableText}>
-            {isNewAccount ? "login" : "sign up"}
+            {isNewAccount ? 'login' : 'sign up'}
           </Text>
         </Pressable>
       </View>
@@ -89,45 +91,45 @@ export const LoginScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
   },
   heading: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   input: {
-    width: "100%",
+    width: '100%',
     height: 50,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: '#f2f2f2',
     paddingHorizontal: 10,
     marginBottom: 10,
     borderRadius: 5,
   },
   button: {
-    width: "100%",
+    width: '100%',
     height: 50,
-    backgroundColor: "orangered",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'orangered',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
   },
   buttonText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
   },
   textContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   text: {},
   pressableText: {
     marginStart: 10,
-    color: "blue",
+    color: 'blue',
   },
 });

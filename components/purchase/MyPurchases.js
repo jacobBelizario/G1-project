@@ -1,44 +1,61 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
   View,
   TouchableOpacity,
   StyleSheet,
   FlatList,
-} from "react-native";
-import AuthContext from "../../store/auth-context";
-import { getAllUserPurchase } from "../../helpers/db-helper";
-import { PurchaseListItem } from "./PurchaseListItem";
-import Spinner from "react-native-loading-spinner-overlay";
+  ScrollView,
+} from 'react-native';
+import AuthContext from '../../store/auth-context';
+import { PurchaseListItem } from './PurchaseListItem';
+import Spinner from 'react-native-loading-spinner-overlay';
+import DbContext from '../../store/db-context';
 
 export const MyPurchases = ({ navigation }) => {
   const authCtx = useContext(AuthContext);
-  const [purchases, setPurchases] = useState([]);
+  const dbCtx = useContext(DbContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('is user logged in', authCtx.isLoggedIn);
+    //fetch user purchases for the first time when this renders
     setLoading(true);
     async function getPurchases() {
-      const fetchPurchases = await getAllUserPurchase(authCtx.uid);
-      setPurchases(fetchPurchases);
+      const fetchPurchases = await dbCtx.getPurchases(authCtx.email);
     }
-    setLoading(true);
-    authCtx.isLoggedIn ? getPurchases() : null;
+    authCtx.isLoggedIn && getPurchases();
     setLoading(false);
   }, [authCtx.isLoggedIn]);
+
+  useEffect(() => {
+    console.log('is user logged in', authCtx.isLoggedIn);
+    //fetch user purchases for the first time when this renders
+    setLoading(true);
+    async function getPurchases() {
+      console.log('about to fetch user data');
+      const fetchPurchases = await dbCtx.getPurchases(authCtx.email);
+    }
+    authCtx.isLoggedIn && getPurchases();
+    setLoading(false);
+  }, []);
+
   const renderItem = ({ item }) => <PurchaseListItem data={item.data()} />;
   return (
     <View>
-      <Spinner
-        visible={loading}
-        textContent={"Loading..."}
-        textStyle={styles.spinnerTextStyle}
-      />
+      {loading && (
+        <Spinner
+          visible={loading}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      )}
+
       {authCtx.isLoggedIn ? (
         <View>
-          {purchases.length > 0 ? (
+          {dbCtx.myPurchases.length > 0 ? (
             <FlatList
-              data={purchases}
+              data={dbCtx.myPurchases}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
             />
@@ -53,7 +70,7 @@ export const MyPurchases = ({ navigation }) => {
           <Text style={styles.title}>This feature is only for users</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate('Login')}
           >
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
@@ -65,24 +82,24 @@ export const MyPurchases = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 400,
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   buttonContainer: {
     marginTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonInactive: {
     opacity: 0.5,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
     paddingVertical: 12,
     width: 300,
     paddingHorizontal: 24,
@@ -91,7 +108,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "orangered",
+    backgroundColor: 'orangered',
     paddingVertical: 12,
     width: 300,
     paddingHorizontal: 24,
@@ -99,16 +116,16 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   text: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    textAlign: "center",
+    textAlign: 'center',
   },
   textInactive: {
-    color: "gray",
+    color: 'gray',
     fontSize: 18,
-    textAlign: "center",
+    textAlign: 'center',
   },
   spinnerTextStyle: {
-    color: "orangered",
+    color: 'orangered',
   },
 });

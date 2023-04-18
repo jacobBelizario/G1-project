@@ -1,14 +1,17 @@
-import React, { useContext } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { addSubcollection } from "../../helpers/db-helper";
-import AuthContext from "../../store/auth-context";
+import React, { useContext } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AuthContext from '../../store/auth-context';
+import DbContext from '../../store/db-context';
 
 export const OrderDetail = ({ navigation, data }) => {
   const authCtx = useContext(AuthContext);
+  const dbCtx = useContext(DbContext);
   const insertToDB = async () => {
-    await addSubcollection(data, authCtx.uid);
+    await dbCtx.addPurchase(data, authCtx.email);
+    // update the purchases array
+    await dbCtx.getPurchases(authCtx.email);
     Alert.alert(`Purchased Ticket!`);
-    navigation.navigate("Home");
+    navigation.navigate('Home');
   };
 
   return (
@@ -33,7 +36,7 @@ export const OrderDetail = ({ navigation, data }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    borderColor: "gray",
+    borderColor: 'gray',
     borderWidth: 2,
     padding: 10,
     borderRadius: 5,
@@ -47,26 +50,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
     marginTop: 5,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   heading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 5,
     marginBottom: 5,
   },
   button: {
     marginTop: 20,
-    width: "100%",
+    width: '100%',
     height: 50,
-    backgroundColor: "orangered",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'orangered',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
   },
   text: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
