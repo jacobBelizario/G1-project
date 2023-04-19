@@ -38,12 +38,12 @@ export const AuthContextProvider = (props) => {
       const collectionRef = collection(
         db,
         'movie_users',
-        user?.email,
+        String(user?.email).toLowerCase(),
         'user_profile'
       );
-      const docRef = doc(collectionRef, user?.email);
+      const docRef = doc(collectionRef, String(user?.email).toLowerCase());
       await setDoc(docRef, {
-        email: user?.email,
+        email: String(user?.email).toLowerCase(),
         password: user?.password,
       });
 
@@ -75,10 +75,10 @@ export const AuthContextProvider = (props) => {
       const subCollectionRef = collection(
         db,
         'movie_users',
-        user?.email,
+        String(user?.email).toLowerCase(),
         'user_profile'
       );
-      const docRef = doc(subCollectionRef, user?.email);
+      const docRef = doc(subCollectionRef, String(user?.email).toLowerCase());
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -91,12 +91,12 @@ export const AuthContextProvider = (props) => {
         const collectionRef = collection(
           db,
           'movie_users',
-          user?.email,
+          String(user?.email).toLowerCase(),
           'user_profile'
         );
-        const docRef = doc(collectionRef, user?.email);
+        const docRef = doc(collectionRef, String(user?.email).toLowerCase());
         await setDoc(docRef, {
-          email: user?.email,
+          email: String(user?.email).toLowerCase(),
           password: user?.password,
         });
       }
